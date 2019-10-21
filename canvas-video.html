@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/demo.css">
+    <title>display a video in map(canvas)</title>
+    <script src="./js/ol-debug.js"></script>
+    <script src="js/canvas-video-player.js"></script>
+</head>
+
+<body>
+    <video class="js-video" muted style="display:none">
+        <source src="./video/demo.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="video-timeline js-timeline">
+        <div class="video-timeline-passed js-timeline-passed">
+        </div>
+    </div>
+    <div id="map"></div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        //创建一个瓦片图层
+        var raster = new ol.layer.Tile({
+            //OSM数据源
+            source: new ol.source.OSM()
+        });
+
+        //初始化地图
+        var map = new ol.Map({
+            layers: [raster],
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2
+            })
+        });
+        console.log(map.getViewport().children[0])
+        // video to canvas
+        var canvasVideo = new CanvasVideoPlayer({
+            videoSelector: '.js-video',
+            canvasSelector: map.getViewport().children[0],
+            timelineSelector: '.js-timeline',
+            audio: false
+        });
+    };
+</script>
+
+</html>
